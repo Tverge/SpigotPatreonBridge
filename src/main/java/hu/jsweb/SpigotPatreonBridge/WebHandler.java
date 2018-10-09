@@ -17,10 +17,17 @@ public class WebHandler extends AbstractHandler
 {
     final String greeting;
     final String body;
+    App plugin;
 
     public WebHandler()
     {
         this("Hello World");
+    }
+
+    public WebHandler(App plugin)
+    {
+        this("Hello World");
+        this.plugin = plugin;
     }
 
     public WebHandler( String greeting )
@@ -44,11 +51,10 @@ public class WebHandler extends AbstractHandler
         String val = request.getParameter("foo");
         PrintWriter out = response.getWriter();
 
-        //HTTP print
         out.println (val);
-        //CONSOLE print
-        System.console().writer().println(val);
-        System.out.println(val);
+        
+        this.plugin.onWebRequest(val);
+
 
         baseRequest.setHandled(true);
     }

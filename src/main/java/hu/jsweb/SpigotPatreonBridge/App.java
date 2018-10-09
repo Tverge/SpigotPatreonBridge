@@ -9,12 +9,11 @@ public class App extends JavaPlugin{
     
 	public void onEnable() {
 		this.webServer = new Server(8080);
-		this.webServer.setHandler(new WebHandler());
+		this.webServer.setHandler(new WebHandler(this));
         try {
             this.webServer.start();
         } catch (Exception e) {
             getLogger().info("Cannnot bind to port 8080!");
-            getServer().dispatchCommand(getServer().getConsoleSender(), "/help");
             e.printStackTrace();
         }
 		this.getLogger().info("SpigotPatreonBridge Enabled");
@@ -25,5 +24,19 @@ public class App extends JavaPlugin{
             this.webServer.stop();
         } catch (Exception e) {
         }
+    }
+    
+    public void onWebRequest(String command) {
+        
+        final String fcommand = command;
+        
+        Bukkit.getScheduler().runTask(this, new Runnable() {
+            @Override
+            public void run() {
+                getLogger().info(fcommand);
+                getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), fcommand);
+                getLogger().info(Bukkit.getServer().getConsoleSender());
+            }
+        });
     }
 }
