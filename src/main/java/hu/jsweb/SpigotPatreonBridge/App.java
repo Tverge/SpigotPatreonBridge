@@ -7,17 +7,17 @@ import org.eclipse.jetty.server.Server;
 public class App extends JavaPlugin{
     protected Server webServer;
     
-	public void onEnable() {
-		this.webServer = new Server(8080);
-		this.webServer.setHandler(new WebHandler(this));
+    public void onEnable() {
+        this.webServer = new Server(8080);
+        this.webServer.setHandler(new WebHandler(this));
         try {
             this.webServer.start();
         } catch (Exception e) {
             getLogger().info("Cannnot bind to port 8080!");
             e.printStackTrace();
         }
-		this.getLogger().info("SpigotPatreonBridge Enabled");
-	}
+        this.getLogger().info("SpigotPatreonBridge Enabled");
+    }
     
     public void onDisable() {
         try {
