@@ -22,14 +22,12 @@ import com.google.gson.Gson;
 public class WebCommandSender implements CommandSender
 {
     private HttpServletResponse response;
-    private Request request;
     private ArrayList<String> messagesToSend;
     
     private final PermissibleBase perm = new PermissibleBase(this);
     
-    public void setRequestResponse(Request baseRequest, HttpServletResponse response) {
+    public void setServletResponse(HttpServletResponse response) {
         this.response = response;
-        this.request = baseRequest;
         this.messagesToSend = new ArrayList<String>();
     }
     
@@ -51,7 +49,7 @@ public class WebCommandSender implements CommandSender
         return Bukkit.getServer();
     }
     
-    public void send() 
+    public void prepareResponse() 
         throws IOException
     {
         Gson gson = new Gson();
@@ -61,9 +59,14 @@ public class WebCommandSender implements CommandSender
 
         PrintWriter responseWriter = this.response.getWriter();
         responseWriter.println(gson.toJson(this.messagesToSend));
-
-        this.request.setHandled(true);
+        
+        System.out.println(gson.toJson(this.messagesToSend));
     }
+
+    public CommandSender.Spigot spigot() {
+        return new CommandSender.Spigot();
+    }
+    // Spigot end
 
     public boolean isOp() {
         return true;
